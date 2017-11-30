@@ -1,4 +1,5 @@
 ﻿using Beketov_Support.Models;
+using Beketov_Support.Models.DB_Classes;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -17,10 +18,17 @@ namespace Beketov_Support.Controllers
             var chatID = message.Chat.Id;
             var messageID = message.MessageId;
 
+            Logger log = new Logger();
+
             if (messageID > BotSettings.lastMessageID)
             {
-                await client.SendTextMessageAsync(chatID, message.Text + " - " + messageID.ToString() + " - " + BotSettings.lastMessageID.ToString());
+                log.Msg(message);
 
+                string respond = message.Text + " - " + messageID.ToString() + " - " + BotSettings.lastMessageID.ToString();
+                await client.SendTextMessageAsync(chatID, respond);
+
+                log.Msg(respond);
+                //Тестируем синхронизацию с Git
                 BotSettings.lastMessageID = messageID;
 
                 foreach (var command in commands)
