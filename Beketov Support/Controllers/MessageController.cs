@@ -28,7 +28,7 @@ namespace Beketov_Support.Controllers
                 await client.SendTextMessageAsync(chatID, respond);
 
                 log.Msg(respond);
-                //Тестируем синхронизацию с Git
+                
                 BotSettings.lastMessageID = messageID;
 
                 foreach (var command in commands)
