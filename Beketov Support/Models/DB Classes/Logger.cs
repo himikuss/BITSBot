@@ -14,6 +14,8 @@ namespace Beketov_Support.Models.DB_Classes
         public Logger()
         {
             db = new BotDB();
+
+            
         }
 
         public void Msg(Message msg)

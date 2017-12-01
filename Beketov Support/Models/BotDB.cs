@@ -15,6 +15,7 @@
         public BotDB()
             : base("name=BotDB")
         {
+            Database.SetInitializer<BotDB>(new CreateDatabaseIfNotExists<BotDB>());
         }
 
         public virtual DbSet<MessageLogs> MessageLogs { get; set; }
