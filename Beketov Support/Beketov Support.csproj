@@ -229,10 +229,14 @@
     <Compile Include="Models\DB Classes\Logger.cs" />
     <Compile Include="Models\Entities\Button.cs" />
     <Compile Include="Models\Entities\Company.cs" />
+    <Compile Include="Models\Entities\History.cs" />
+    <Compile Include="Models\Entities\Incident.cs" />
     <Compile Include="Models\Entities\Log.cs" />
     <Compile Include="Models\Entities\Message.cs" />
     <Compile Include="Models\Entities\Script.cs" />
     <Compile Include="Models\Entities\ScriptParam.cs" />
+    <Compile Include="Models\Entities\ScriptParamValue.cs" />
+    <Compile Include="Models\Entities\ScriptResult.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

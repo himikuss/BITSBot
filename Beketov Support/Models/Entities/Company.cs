@@ -12,6 +12,14 @@ namespace Beketov_Support.Models.Entities
         [Required]
         public string Name { get; set; }
         public int TaxId { get; set; }
+        public string DomainName { get; set; }
+        [MaxLength(15)]
+        public string InternetIP { get; set; }
+
+        [Required]
+        public int? FirstMessage { get; set; }
+        [ForeignKey("FirstMassege")]
+        public Message Message { get; set; }
         
         public ICollection<User> Users { get; set; }
         public Company() => Users = new List<User>();

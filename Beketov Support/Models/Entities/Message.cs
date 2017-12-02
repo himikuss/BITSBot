@@ -16,15 +16,17 @@ namespace Beketov_Support.Models.Entities
 
         public int? ScriptId { get; set; }
         [ForeignKey("ScriptId")]
-        public Script Scipt { get; set; }
+        public Script Script { get; set; }
 
         public ICollection<Button> Buttons { get; set; }
-        public ICollection<ScriptParam> ScriptParam { get; set; }
+        public ICollection<ScriptParamValue> ScriptParams { get; set; }
+        public ICollection<ScriptResult> ScriptResults { get; set; }
 
         public Message()
         {
             Buttons = new List<Button>();
-            ScriptParam = new List<ScriptParam>();
+            ScriptParams = new List<ScriptParamValue>();
+            ScriptResults = new List<ScriptResult>();
         }
     }
 }

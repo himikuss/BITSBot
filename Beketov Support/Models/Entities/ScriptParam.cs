@@ -13,14 +13,20 @@ namespace Beketov_Support.Models.Entities
         [MaxLength(15)]
         public string Name { get; set; }
         [Required]
-        public string Value { get; set; }
         public string Description { get; set; }
         [Required]
         public SParamType Type { get; set; }
 
         [Required]
-        public int? MessageId { get; set; }
-        [ForeignKey("MessageId")]
-        public Message Message { get; set; }
+        public int? ScriptId { get; set; }
+        [ForeignKey("ScriptId")]
+        public Script Script { get; set; }
+
+        public ICollection<ScriptParamValue> ScriptValues { get; set; }
+
+        public ScriptParam()
+        {
+            ScriptValues = new List<ScriptParamValue>();
+        }
     }
 }

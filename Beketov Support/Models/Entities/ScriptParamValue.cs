@@ -4,26 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Beketov_Support.Models.Entities
 {
-    public class Button
+    public class ScriptParamValue
     {
         [Key]
         [Index]
         public int Id { get; set; }
         [Required]
-        [MaxLength(15)]
-        public string Text { get; set; }
-        public string Description { get; set; }
-        [Required]
-        public int NextMessage { get; set; }
+        public string Value { get; set; }
 
         [Required]
-        public int? MessageId { get; set; }
+        public int? ScriptParamId { get; set; }
+        [ForeignKey("ScriptParamId")]
+        public ScriptParam ScriptParam { get; set; }
 
+        [Required]
+        public int MessageId { get; set; }
         [ForeignKey("MessageId")]
         public Message Message { get; set; }
-
-        public ICollection<History> History { get; set; }
-
-        public Button() => History = new List<History>();
     }
 }

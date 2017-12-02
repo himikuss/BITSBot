@@ -17,6 +17,9 @@ namespace Beketov_Support.Models.Entities
         public string WebUserName { get; set; }
         public string WebPassword { get; set; }
         public string EMail { get; set; }
+        public string DomainUserName { get; set; }
+        public string IP { get; set; }
+        public string ComputerName { get; set; }
         [Required]
         public UserRole Role { get; set; }
 

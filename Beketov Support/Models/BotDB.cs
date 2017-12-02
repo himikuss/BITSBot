@@ -8,6 +8,8 @@
     public enum UserRole { User, Operator, DChief, Admin };
     public enum MessageType { Info, Condition, Script };
     public enum SParamType { Text, Number, IP }
+    public enum SReturnType { Bool, Number, Text }
+    public enum MessageDirection { ToBot, FromBot }
 
     public class BotDB : DbContext
     {
