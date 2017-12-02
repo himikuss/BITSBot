@@ -4,6 +4,11 @@
     using System.Data.Entity;
     using System.Linq;
 
+    public enum LogType { Message, Code, System };
+    public enum LogLevel { Info, Warranty, Error};
+    public enum UserRole { User, Operator, DChief, Admin };
+    public enum MessageType { Info, Condition, Script };
+
     public class BotDB : DbContext
     {
         // Контекст настроен для использования строки подключения "BotDB" из файла конфигурации  
@@ -18,7 +23,6 @@
             Database.SetInitializer<BotDB>(new CreateDatabaseIfNotExists<BotDB>());
         }
 
-        public virtual DbSet<MessageLogs> MessageLogs { get; set; }
         public virtual DbSet<Logs> Logs { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
@@ -27,20 +31,13 @@
         public virtual DbSet<ScriptLinks> ScriptLinks { get; set; }
     }
 
-    public class MessageLogs
-    {
-        public int Id { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public int UserId { get; set; }
-        public string TextMessage { get; set; }
-    }
-
     public class Logs
     {
+
         public int Id { get; set; }
         public DateTime TimeStamp { get; set; }
         public string Author { get; set; }
-        public int Type { get; set; }
+        public LogLevel Level { get; set; }
         public string Message { get; set; }
     }
 

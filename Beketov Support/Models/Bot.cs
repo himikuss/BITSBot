@@ -15,7 +15,7 @@ namespace Beketov_Support.Models
         public static async Task<TelegramBotClient> Get()
         {
             if (client != null) return client;
-
+            
             commandsList = new List<Command>();
             commandsList.Add(new Hello());
             commandsList.Add(new log());

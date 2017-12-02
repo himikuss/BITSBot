@@ -227,6 +227,9 @@
     <Compile Include="Models\Commands\Hello.cs" />
     <Compile Include="Models\Commands\log.cs" />
     <Compile Include="Models\DB Classes\Logger.cs" />
+    <Compile Include="Models\Entities\Company.cs" />
+    <Compile Include="Models\Entities\Log.cs" />
+    <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
