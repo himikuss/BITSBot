@@ -21,12 +21,14 @@ namespace Beketov_Support.Models.Entities
         public ICollection<Button> Buttons { get; set; }
         public ICollection<ScriptParamValue> ScriptParams { get; set; }
         public ICollection<ScriptResult> ScriptResults { get; set; }
+        public ICollection<Company> Company { get; set; }
 
         public Message()
         {
             Buttons = new List<Button>();
             ScriptParams = new List<ScriptParamValue>();
             ScriptResults = new List<ScriptResult>();
+            Company = new List<Company>();
         }
     }
 }
