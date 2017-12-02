@@ -32,5 +32,9 @@
         public virtual DbSet<Button> Buttons { get; set; }
         public virtual DbSet<Script> Scripts { get; set; }
         public virtual DbSet<ScriptParam> ScriptParams { get; set; }
+        public virtual DbSet<ScriptParamValue> ScriptParamValues { get; set; }
+        public virtual DbSet<ScriptResult> ScriptResults { get; set; }
+        public virtual DbSet<Incident> Incidents { get; set; }
+        public virtual DbSet<History> History { get; set; }
     }
 }
