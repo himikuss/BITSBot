@@ -18,7 +18,7 @@ namespace Beketov_Support.Models.Entities
         public LogType Type { get; set; }
         [Required]
         public LogLevel Lvl { get; set; }
-        public string source { get; set; }
+        public string Source { get; set; }
 
         public int? UserId { get; set; }
         [ForeignKey("UserId")]

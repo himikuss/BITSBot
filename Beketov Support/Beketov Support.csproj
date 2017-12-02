@@ -227,8 +227,12 @@
     <Compile Include="Models\Commands\Hello.cs" />
     <Compile Include="Models\Commands\log.cs" />
     <Compile Include="Models\DB Classes\Logger.cs" />
+    <Compile Include="Models\Entities\Button.cs" />
     <Compile Include="Models\Entities\Company.cs" />
     <Compile Include="Models\Entities\Log.cs" />
+    <Compile Include="Models\Entities\Message.cs" />
+    <Compile Include="Models\Entities\Script.cs" />
+    <Compile Include="Models\Entities\ScriptParam.cs" />
     <Compile Include="Models\Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,13 +1,13 @@
 ﻿namespace Beketov_Support.Models
 {
-    using System;
+    using Beketov_Support.Models.Entities;
     using System.Data.Entity;
-    using System.Linq;
 
     public enum LogType { Message, Code, System };
     public enum LogLevel { Info, Warranty, Error};
     public enum UserRole { User, Operator, DChief, Admin };
     public enum MessageType { Info, Condition, Script };
+    public enum SParamType { Text, Number, IP }
 
     public class BotDB : DbContext
     {
@@ -20,68 +20,15 @@
         public BotDB()
             : base("name=BotDB")
         {
-            Database.SetInitializer<BotDB>(new CreateDatabaseIfNotExists<BotDB>());
+            Database.SetInitializer<BotDB>(new DropCreateDatabaseIfModelChanges<BotDB>());
         }
 
-        public virtual DbSet<Logs> Logs { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Messages> Messages { get; set; }
-        public virtual DbSet<Buttons> Buttons { get; set; }
-        public virtual DbSet<Scripts> Scripts { get; set; }
-        public virtual DbSet<ScriptLinks> ScriptLinks { get; set; }
-    }
-
-    public class Logs
-    {
-
-        public int Id { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public string Author { get; set; }
-        public LogLevel Level { get; set; }
-        public string Message { get; set; }
-    }
-
-    public class Users
-    {
-        public int Id { get; set; }
-        public string TelegramId { get; set; }
-        public int Phone { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string WebUserName { get; set; }
-        public string WebPassword { get; set; }
-        public string EMail { get; set; }
-        public string Company { get; set; }
-    }
-
-    public class Messages
-    {
-        public int Id { get; set; }
-        public string Message { get; set; }
-        public string Description { get; set; }
-        public int Type { get; set; }
-    }
-
-    public class Buttons
-    {
-        public int Id { get; set; }
-        public int MessageId { get; set; }
-        public string Text { get; set; }
-        public int NMessage { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class Scripts
-    {
-        public int Id { get; set; }
-        public string Link { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class ScriptLinks
-    {
-        public int Id { get; set; }
-        public int MessageId { get; set; }
-        public int ScriptId { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Button> Buttons { get; set; }
+        public virtual DbSet<Script> Scripts { get; set; }
+        public virtual DbSet<ScriptParam> ScriptParams { get; set; }
     }
 }
