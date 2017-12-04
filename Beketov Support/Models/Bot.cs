@@ -73,13 +73,15 @@ namespace Beketov_Support.Models
             return -1;
         }
 
-        public static async void Reply (int msgId, int chatId)
+        public static async void Reply (int msgId, long chatId)
         {
             var client = await Bot.Get();
                         
             using (BotDB db = new BotDB())
             {
                 Message message = db.Messages.Find(msgId);
+
+                Logger.Wright(message.Text);
 
                 switch (message.Type)
                 {
