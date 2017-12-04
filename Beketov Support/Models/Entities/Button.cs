@@ -12,8 +12,10 @@ namespace Beketov_Support.Models.Entities
         [Required]
         [MaxLength(15)]
         public string Text { get; set; }
+        public bool Contact { get; set; }
+        public bool Location { get; set; }
         public string Description { get; set; }
-        [Required]
+        //[Required]
         public int NextMessage { get; set; }
 
         [Required]

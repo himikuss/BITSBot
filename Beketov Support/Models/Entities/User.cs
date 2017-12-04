@@ -9,20 +9,22 @@ namespace Beketov_Support.Models.Entities
         [Key]
         [Index]
         public int Id { get; set; }
-        public string TelegramId { get; set; }
-        public int Phone { get; set; }
-        [Required]
+        public int TelegramId { get; set; }
+        [MaxLength(16)]
+        public string Phone { get; set; }
+        //[Required]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string WebUserName { get; set; }
         public string WebPassword { get; set; }
         public string EMail { get; set; }
         public string DomainUserName { get; set; }
-        public string IP { get; set; }
+        public string ComputerIP { get; set; }
         public string ComputerName { get; set; }
         [Required]
         public UserRole Role { get; set; }
 
+        [Required]
         public int? CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         public Company Company { get; set; }

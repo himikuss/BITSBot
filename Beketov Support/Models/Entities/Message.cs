@@ -9,10 +9,11 @@ namespace Beketov_Support.Models.Entities
         [Key]
         [Index]
         public int Id { get; set; }
-        [Required]
+        //[Required]
         public string Text { get; set; }
         [Required]
         public MessageType Type { get; set; }
+        public MessageKeyboardType KType { get; set; }
 
         public int? ScriptId { get; set; }
         [ForeignKey("ScriptId")]

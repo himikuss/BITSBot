@@ -223,10 +223,7 @@
     <Compile Include="Models\Bot.cs" />
     <Compile Include="Models\BotDB.cs" />
     <Compile Include="Models\BotSettings.cs" />
-    <Compile Include="Models\Commands\Command.cs" />
-    <Compile Include="Models\Commands\Hello.cs" />
-    <Compile Include="Models\Commands\log.cs" />
-    <Compile Include="Models\DB Classes\Logger.cs" />
+    <Compile Include="Models\DBAccess.cs" />
     <Compile Include="Models\Entities\Button.cs" />
     <Compile Include="Models\Entities\Company.cs" />
     <Compile Include="Models\Entities\History.cs" />
@@ -238,6 +235,8 @@
     <Compile Include="Models\Entities\ScriptParamValue.cs" />
     <Compile Include="Models\Entities\ScriptResult.cs" />
     <Compile Include="Models\Entities\User.cs" />
+    <Compile Include="Models\BotDBInitializer.cs" />
+    <Compile Include="Models\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

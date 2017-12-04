@@ -16,7 +16,7 @@ namespace Beketov_Support.Models.Entities
         [MaxLength(15)]
         public string InternetIP { get; set; }
 
-        [Required]
+        //[Required]
         public int? FirstMessage { get; set; }
         [ForeignKey("FirstMassege")]
         public Message Message { get; set; }

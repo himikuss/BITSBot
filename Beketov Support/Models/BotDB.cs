@@ -7,9 +7,10 @@
     public enum LogLevel { Info, Warranty, Error};
     public enum UserRole { User, Operator, DChief, Admin };
     public enum MessageType { Info, Condition, Script };
-    public enum SParamType { Text, Number, IP }
-    public enum SReturnType { Bool, Number, Text }
-    public enum MessageDirection { ToBot, FromBot }
+    public enum MessageKeyboardType { none, Reply, Inline };
+    public enum SParamType { Text, Number, IP };
+    public enum SReturnType { Bool, Number, Text };
+    public enum MessageDirection { ToBot, FromBot };
 
     public class BotDB : DbContext
     {
@@ -22,7 +23,7 @@
         public BotDB()
             : base("name=BotDB")
         {
-            Database.SetInitializer<BotDB>(new DropCreateDatabaseIfModelChanges<BotDB>());
+            Database.SetInitializer<BotDB>(new BotDBInitializer());
         }
 
         public virtual DbSet<Log> Logs { get; set; }
