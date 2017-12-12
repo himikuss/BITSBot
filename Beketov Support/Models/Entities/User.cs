@@ -23,7 +23,7 @@ namespace Beketov_Support.Models.Entities
         public string ComputerName { get; set; }
         [Required]
         public UserRole Role { get; set; }
-
+        
         [Required]
         public int? CompanyId { get; set; }
         [ForeignKey("CompanyId")]

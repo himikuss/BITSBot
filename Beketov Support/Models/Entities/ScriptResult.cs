@@ -14,7 +14,7 @@ namespace Beketov_Support.Models.Entities
         [Required]
         public int NextMessage { get; set; }
 
-        [Required]
+        
         public int? MessageId { get; set; }
         [ForeignKey("MessageId")]
         public Message Message { get; set; }

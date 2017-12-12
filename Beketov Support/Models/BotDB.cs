@@ -1,6 +1,7 @@
 ﻿namespace Beketov_Support.Models
 {
     using Beketov_Support.Models.Entities;
+    using System.Collections.Generic;
     using System.Data.Entity;
 
     public enum LogType { Message, Code, System };
@@ -25,7 +26,7 @@
         {
             Database.SetInitializer<BotDB>(new BotDBInitializer());
         }
-
+        
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Company> Companies { get; set; }

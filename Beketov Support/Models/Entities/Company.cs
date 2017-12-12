@@ -15,10 +15,10 @@ namespace Beketov_Support.Models.Entities
         public string DomainName { get; set; }
         [MaxLength(15)]
         public string InternetIP { get; set; }
-
+        
         //[Required]
         public int? FirstMessage { get; set; }
-        [ForeignKey("FirstMassege")]
+        [ForeignKey("FirstMessage")]
         public Message Message { get; set; }
         
         public ICollection<User> Users { get; set; }

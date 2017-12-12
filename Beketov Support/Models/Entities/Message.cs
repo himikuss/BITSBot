@@ -9,27 +9,27 @@ namespace Beketov_Support.Models.Entities
         [Key]
         [Index]
         public int Id { get; set; }
-        //[Required]
+        [Required]
         public string Text { get; set; }
         [Required]
         public MessageType Type { get; set; }
         public MessageKeyboardType KType { get; set; }
-
+        
         public int? ScriptId { get; set; }
         [ForeignKey("ScriptId")]
-        public Script Script { get; set; }
+        public Script Scripts { get; set; }
 
-        public ICollection<Button> Buttons { get; set; }
         public ICollection<ScriptParamValue> ScriptParams { get; set; }
         public ICollection<ScriptResult> ScriptResults { get; set; }
-        public ICollection<Company> Company { get; set; }
-
+        public ICollection<Button> Buttons { get; set; }
+        public ICollection<Company> Companies { get; set; }
+                
         public Message()
         {
-            Buttons = new List<Button>();
             ScriptParams = new List<ScriptParamValue>();
             ScriptResults = new List<ScriptResult>();
-            Company = new List<Company>();
+            Buttons = new List<Button>();
+            Companies = new List<Company>();
         }
     }
 }

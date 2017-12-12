@@ -16,41 +16,31 @@ namespace Beketov_Support.Controllers
             var client = await Bot.Get();
             var chatID = message.Chat.Id;
             var messageID = message.MessageId;
-            int userId = -1;
+            int userId = 1;
 
             if (messageID > BotSettings.lastMessageID)
             {
-                if ((userId = Bot.Authorization(message.From.Id)) < 0)
+                BotSettings.lastMessageID = messageID;
+                
+                userId = Bot.Authorization(message.From.Id);
+
+                if (userId < 2)
                 {
-                    if (message.Contact != null)
+                    if (message.Contact != null && message.From.Id == message.Contact.UserId)
                     {
-                        if ((userId = Bot.Registration(message.Contact)) < 0)
-                        {
-                            Bot.Reply(1, chatID);
-                            Logger.Wright("Идентификатор сообщения: 1", "Ответ", userId, LogLevel.Info);
-                        }
+                        userId = Bot.Registration(message.Contact);
+
+                        if (userId < 2)
+                            Bot.Reply(3, chatID, message, userId);
 
                         else
-                        {
-                            Bot.Reply(2, chatID);
-                            Logger.Wright("Идентификатор сообщения: 2", "Ответ", userId, LogLevel.Info);
-                        }
+                            Bot.Reply(2, chatID, message, userId);
                     }
                     else
-                    {
-                        Bot.Reply(0, chatID);
-                        Logger.Wright("Идентификатор сообщения: 0", "Ответ", userId, LogLevel.Info);
-                    }
+                        Bot.Reply(1, chatID, message, userId);
                 }
                 else
-                {
-                    Bot.Reply(2, chatID);
-                    Logger.Wright("Идентификатор сообщения: 2", "Ответ", userId, LogLevel.Info);
-                }
-
-                Logger.Wright(message.Text, userId);
-
-                BotSettings.lastMessageID = messageID;
+                    Bot.Reply(2, chatID, message, userId);
             }
 
             return Ok();

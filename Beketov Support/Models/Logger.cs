@@ -19,10 +19,11 @@ namespace Beketov_Support.Models
                     Type = type,
                     Lvl = level,
                     TXT = msg,
-                    TimeStamp = DateTime.Now
+                    TimeStamp = DateTime.Now,
+                    Source = source
                 };
-                if (userId >= 0) log.UserId = userId;
-                
+                if (userId > 0) log.UserId = userId;
+
                 db.Logs.Add(log);
                 db.SaveChanges();
             }
@@ -34,7 +35,7 @@ namespace Beketov_Support.Models
         /// <param name="msg">Текст ответа</param>
         public static void Wright (string msg)
         {
-            Logger.Wright(msg, "", -1, LogLevel.Info, LogType.Message);
+            Logger.Wright("Бот: " + msg, "", -1, LogLevel.Info, LogType.Message);
         }
 
         /// <summary>
@@ -44,7 +45,13 @@ namespace Beketov_Support.Models
         /// <param name="userId">Идентификатор пользователя</param>
         public static void Wright (string msg, int userId)
         {
-            Logger.Wright(msg, "", userId, LogLevel.Info, LogType.Message);
+            using (BotDB db = new BotDB())
+            {
+                if (msg != null)
+                    Logger.Wright(db.Users.Find(userId).FirstName + ": " + msg, "", userId, LogLevel.Info, LogType.Message);
+                else
+                    Logger.Wright("Ответ " + db.Users.Find(userId).FirstName + "после регистрации", "", userId, LogLevel.Info, LogType.Message);
+            }
         }
 
         /// <summary>

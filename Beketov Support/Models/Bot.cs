@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Threading.Tasks;
+using System.Linq;
 using Telegram.Bot;
 using Beketov_Support.Models.Entities;
 using System.Data.Entity;
@@ -24,11 +26,11 @@ namespace Beketov_Support.Models
 
         public static int Authorization (int TUserId)
         {
-            Logger.Wright("Запрос авторизации.TelegramId: " + TUserId, "Авторизация", -1, LogLevel.Info);
-
+            Logger.Wright("Запрос авторизации.TelegramId: " + TUserId, "Авторизация", 1, LogLevel.Info);
+            
             using (var db = new BotDB())
             {
-                foreach(User u in db.Users)
+                foreach(User u in db. Users)
                 {
                     if (u.TelegramId == TUserId)
                     {
@@ -38,60 +40,111 @@ namespace Beketov_Support.Models
                     }
                 }
             }
-            Logger.Wright("Авторизация отклонена. TelegramId: " + TUserId, "Авторизация", -1, LogLevel.Info);
-
-            return -1;
+            Logger.Wright("Авторизация отклонена. TelegramId: " + TUserId, "Авторизация", 1, LogLevel.Info);
+            
+            return 1;
         }
 
         public static int Registration (Telegram.Bot.Types.Contact contact)
         {
             Logger.Wright("Запрос регистрации. TelegramId: " + contact.UserId + " PhoneNumber: " + contact.PhoneNumber,
-                "Регистрация", -1, LogLevel.Info);
-
+                "Регистрация", 1, LogLevel.Info);
+            
             using (BotDB db = new BotDB())
             {
-                foreach (User u in db.Users)
+                List<User> users = db.Users.ToList<User>();
+
+                foreach (User u in users)
                 {
-                    if (u.Phone == contact.PhoneNumber)
+                    int test = u.Phone.CompareTo(contact.PhoneNumber);
+
+                    if (u.Phone.CompareTo(contact.PhoneNumber) == 0)
                     {
-                        Logger.Wright("Регистрация успешно пройдена. TelegramId: " + 
+                        Logger.Wright("Регистрация успешно пройдена. TelegramId: " +
                             contact.UserId + " PhoneNumber: " + contact.PhoneNumber, "Регистрация", u.Id, LogLevel.Info);
 
-                        if (u.FirstName == "") u.FirstName = contact.FirstName;
-                        if (u.LastName == "") u.LastName = contact.LastName;
+                        if (u.FirstName == null) u.FirstName = contact.FirstName;
+                        if (u.LastName == null) u.LastName = contact.LastName;
                         u.TelegramId = contact.UserId;
-
-                        db.SaveChanges();
+                        
+                        if (db.SaveChanges() > 0)
+                            Logger.Wright("База обновлена!", "Регистрация", u.Id, LogLevel.Info);
+                        else
+                            Logger.Wright("Ошибка обновления базы", "Регистрация", u.Id, LogLevel.Error);
 
                         return u.Id;
                     }
                 }
             }
             Logger.Wright("Регистрация отклонена. TelegramId: " + contact.UserId + " PhoneNumber: " + contact.PhoneNumber,
-                "Регистрация", -1, LogLevel.Info);
-
-            return -1;
+                "Регистрация", 1, LogLevel.Info);
+            
+            return 1;
         }
 
-        public static async void Reply (int msgId, long chatId)
+        public static async void Reply (int msgId, long chatId, Telegram.Bot.Types.Message msg, int userId)
         {
-            var client = await Bot.Get();
-                        
+            Logger.Wright(msg.Text, userId);
+
             using (BotDB db = new BotDB())
             {
                 Message message = db.Messages.Find(msgId);
 
                 Logger.Wright(message.Text);
+                Logger.Wright("Тип сообщения: " + message.Type, "Reply", LogLevel.Info);
+                
+                Keyboard keyboard = new Keyboard(msgId);
+                var client = await Bot.Get();
+                Telegram.Bot.Types.Message result;
 
                 switch (message.Type)
                 {
                     case MessageType.Info:
-                        await client.SendTextMessageAsync(chatId, message.Text);
+                        if(message.KType == MessageKeyboardType.none)
+                        {
+                            result = await client.SendTextMessageAsync(chatId, message.Text, Telegram.Bot.Types.Enums.ParseMode.Default,
+                                    false, false, 0, keyboard.Remove);
+
+                            if (result != null)
+                                Logger.Wright("Сообщение отправленно!", "Reply", userId, LogLevel.Info);
+                            else
+                                Logger.Wright("Сообщение НЕ отправленно!", "Reply", userId, LogLevel.Error);
+                        }
+                        else
+                        {
+                            result = await client.SendTextMessageAsync(chatId, message.Text);
+
+                            if (result != null)
+                                Logger.Wright("Сообщение отправленно!", "Reply", userId, LogLevel.Info);
+                            else
+                                Logger.Wright("Сообщение НЕ отправленно!", "Reply", userId, LogLevel.Error);
+                        }
 
                         break;
                     case MessageType.Condition:
-                        await client.SendTextMessageAsync(chatId, message.Text, Telegram.Bot.Types.Enums.ParseMode.Default,
-                            false, false, 0, MakeKeyboard(message));
+                        switch (message.KType)
+                        {
+                            case MessageKeyboardType.Reply:
+                                result = await client.SendTextMessageAsync(chatId, message.Text,
+                                    Telegram.Bot.Types.Enums.ParseMode.Default, false, false, 0, keyboard.Reply);
+
+                                if (result != null)
+                                    Logger.Wright("Сообщение отправленно!", "Reply", userId, LogLevel.Info);
+                                else
+                                    Logger.Wright("Сообщение НЕ отправленно!", "Reply", userId, LogLevel.Error);
+
+                                break;
+                            case MessageKeyboardType.Inline:
+                                result = await client.SendTextMessageAsync(chatId, message.Text, Telegram.Bot.Types.Enums.ParseMode.Default,
+                                    false, false, 0, keyboard.Inline);
+
+                                if (result != null)
+                                    Logger.Wright("Сообщение отправленно!", "Reply", userId, LogLevel.Info);
+                                else
+                                    Logger.Wright("Сообщение НЕ отправленно!", "Reply", userId, LogLevel.Error);
+
+                                break;
+                        }
 
                         break;
                     case MessageType.Script:
@@ -99,59 +152,6 @@ namespace Beketov_Support.Models
                         break;
                 }
             }
-        }
-
-        private static Telegram.Bot.Types.ReplyMarkups.IReplyMarkup MakeKeyboard (Message msg)
-        {
-            using (BotDB db = new BotDB())
-            {
-                Button[] btns = new Button[msg.Buttons.Count];
-                msg.Buttons.CopyTo(btns, 0);
-
-                switch (msg.KType)
-                {
-                    case MessageKeyboardType.Reply:
-                        Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup keyboard =
-                            new Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardMarkup();
-
-                        int rows = (int)Math.Ceiling((Decimal)msg.Buttons.Count / 2);
-                        keyboard.Keyboard = new Telegram.Bot.Types.KeyboardButton[rows][];
-                        int n = 0;
-
-                        for (int r = 0; r < rows && n < msg.Buttons.Count; r++)
-                        {
-                            if((msg.Buttons.Count - n) == 1)
-                                keyboard.Keyboard[r] = new Telegram.Bot.Types.KeyboardButton[1];
-                            else
-                                keyboard.Keyboard[r] = new Telegram.Bot.Types.KeyboardButton[2];
-
-                            for (int c = 0; c < 2 && n < msg.Buttons.Count; c++, n++)
-                            {
-                                keyboard.Keyboard[r][c] = new Telegram.Bot.Types.KeyboardButton(btns[n].Text)
-                                {
-                                    RequestContact = btns[n].Contact,
-                                    RequestLocation = btns[n].Location
-                                };
-                            }
-                        }
-
-                        return keyboard;
-                    case MessageKeyboardType.Inline:
-                        Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup inKeyboard =
-                            new Telegram.Bot.Types.ReplyMarkups.InlineKeyboardMarkup();
-
-                        return inKeyboard;
-                    case MessageKeyboardType.none:
-                        Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardRemove remove =
-                            new Telegram.Bot.Types.ReplyMarkups.ReplyKeyboardRemove
-                            {
-                                RemoveKeyboard = true
-                            };
-
-                        return remove;
-                }
-            }
-            return null;
         }
     }
 }

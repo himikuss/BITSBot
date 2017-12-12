@@ -21,7 +21,7 @@ namespace Beketov_Support.Models.Entities
         public int? ScriptId { get; set; }
         [ForeignKey("ScriptId")]
         public Script Script { get; set; }
-
+        
         public ICollection<ScriptParamValue> ScriptValues { get; set; }
 
         public ScriptParam()

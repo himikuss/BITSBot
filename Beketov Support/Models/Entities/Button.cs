@@ -15,15 +15,14 @@ namespace Beketov_Support.Models.Entities
         public bool Contact { get; set; }
         public bool Location { get; set; }
         public string Description { get; set; }
-        //[Required]
+        [Required]
         public int NextMessage { get; set; }
 
         [Required]
-        public int? MessageId { get; set; }
-
+        public int MessageId { get; set; }
         [ForeignKey("MessageId")]
         public Message Message { get; set; }
-
+        
         public ICollection<History> History { get; set; }
 
         public Button() => History = new List<History>();
